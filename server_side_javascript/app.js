@@ -84,8 +84,8 @@ app.get('/login', function(req, res) { // get은 연결해주는 함수
   res.send('<h1>Login please</h1>');
 });
 
-app.listen(2999, function() {
-  console.log('Connected 2999 port!');
+app.listen(3000, function() {
+  console.log('Connected 3000 port!');
 });
 // route : 길을 찾는다.
 // router(= get()) : 사용자의 요청과 그 요청에 대한 처리인 controller를 중개해주는 역할
