@@ -1,11 +1,28 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var _storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // callback 함수
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+var upload = multer({ storage: _storage }); // uploads/ : 저장될 장소
 var fs = require('fs'); // 파일 시스템 모듈 가져오기
 var app = express();
+app.use('/user', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.locals.pretty = true;
 app.set('views', './views_file');
 app.set('view engine', 'pug');
+app.get('/upload', function(req, res){
+  res.render('upload');
+})
+app.post('/upload', upload.single('userfile'),function(req, res){ //single('userfile') : req 객체 안에 file property(사용자가 전송한 파일 정보)를 넣어준다.
+  res.send('Uploaded : '  + req.file.filename);
+})
 app.get('/topic/new', function(req, res){
   fs.readdir('data', function(err, files){ // /files : data 안의 파일들이 배열로 담김
     if(err) {
